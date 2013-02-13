@@ -1,6 +1,6 @@
 myPodder
 ========
-The goals of this piece of code will be to:
+The goals:
 
 1.  Manage RSS feeds that contain mp3s for listening.
 2.  Parse the feed, and move the mp3 to a staging area.
