@@ -1,5 +1,8 @@
 <?php
 require("../SimplePie/simplepie_1.3.1.mini.php");
+$database = call_database();
+$d = display_feeds($database);
+
 //require_once('../SimplePie/autoloader.php');
 // @TODO Just a single feed for now, but soon it will be
 // a full html page with a form to select the feed to 
@@ -30,5 +33,46 @@ foreach ($feed->get_items() as $num => $item) {
 		print $nlbr;
 	}
 }
+function call_database() {
+
+  try
+  {
+    //open the database
+    $db = new PDO('sqlite:podder.sqlite');
+    return $db;
+  }
+  catch(PDOException $e)
+  {
+    print 'Exception : '.$e->getMessage();
+  }
+  
+ } 
+function add_feeds() {
+
+//$db->exec("INSERT INTO feeds (id,url,guid,transfered) VALUES ($id,$url,$guid,$transfered);");
+
+
+
+}
+
+
+function display_feeds($db) {
+
+    $result = $db->query('SELECT * FROM feeds');
+    foreach($result as $row)
+    {
+      print $row['id'];
+      print $row['url'];
+      print $row['guid'];
+      print $row['transfered'];
+    }
+    
+
+    // close the database connection
+   //$db = NULL;
+  }
+
+
+
 
 ?>
