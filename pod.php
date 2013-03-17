@@ -69,10 +69,23 @@ function display_feeds($db) {
     
 
     // close the database connection
-   //$db = NULL;
+   $db = NULL;
   }
 
-
+function display_form() {
+session_start();
+//include($_SERVER["DOCUMENT_ROOT"] . "/PFBC/Form.php");
+include("../PFBC/Form.php");
+$form = new PFBC\Form("GettingStarted");
+$form->addElement(new PFBC\Element\Textbox("My Textbox:", "MyTextbox"));
+$form->addElement(new PFBC\Element\Select("My Select:", "MySelect", array(
+   "Option #1",
+   "Option #2",
+   "Option #3"
+)));
+$form->addElement(new PFBC\Element\Button);
+$form->render();
+}
 
 
 ?>
