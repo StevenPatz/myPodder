@@ -1,4 +1,5 @@
 <?php
+display_form();
 require("../SimplePie/simplepie_1.3.1.mini.php");
 $database = call_database();
 $d = display_feeds($database);
@@ -74,14 +75,12 @@ function display_feeds($db) {
 
 function display_form() {
 session_start();
-//include($_SERVER["DOCUMENT_ROOT"] . "/PFBC/Form.php");
 include("../PFBC/Form.php");
-$form = new PFBC\Form("GettingStarted");
-$form->addElement(new PFBC\Element\Textbox("My Textbox:", "MyTextbox"));
-$form->addElement(new PFBC\Element\Select("My Select:", "MySelect", array(
-   "Option #1",
-   "Option #2",
-   "Option #3"
+$form = new PFBC\Form("Feeds");
+$form->addElement(new PFBC\Element\Select("Select a Feed:", "FeedSelect", array(
+   "Feed 1",
+   "Feed 2",
+   "Feed 3"
 )));
 $form->addElement(new PFBC\Element\Button);
 $form->render();
