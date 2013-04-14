@@ -1,13 +1,9 @@
 <?php
 display_form();
 require("../SimplePie/simplepie_1.3.1.mini.php");
-$database = call_database();
-$d = display_feeds($database);
+//$database = call_database();
+//$d = display_feeds($database);
 
-//require_once('../SimplePie/autoloader.php');
-// @TODO Just a single feed for now, but soon it will be
-// a full html page with a form to select the feed to 
-// parse
 if (PHP_SAPI === 'cli') {
 	$nlbr = "\n";
    } else {
@@ -25,14 +21,26 @@ $feed->init();
  
 // This makes sure that the content is sent to the browser as text/html and the UTF-8 character set (since we didn't change it).
 $feed->handle_content_type();
-//print $feed->get_description();
-print $nlbr;
-foreach ($feed->get_items() as $num => $item) {
+  foreach ($feed->get_items() as $num => $item) {
+	print $nlbr . "START DOWNLOAD " . $num;
+	
 	$enclosures = $item->get_enclosures();
 	foreach ($enclosures as $enclosure) {
-		?><a href="<?php print $enclosure->get_link();?>"><?php print $num;?></a><?php
-		print $nlbr;
-	}
+	  $url = $enclosure->get_link();
+	  $mp3 = file_get_contents($url);
+	  $file_name = basename($url);
+	    if (!$mp3)
+	    die("there was no file");
+
+	  $saveto = "/media/musicB/podcasts/" . $file_name;
+	  file_put_contents($saveto, $mp3); 
+	  if (!file_exists($saveto))
+	    die("File was not saved");
+
+	  
+	} 
+
+	print $nlbr . "END DOWNLOAD " . $num . $nlbr;
 }
 function call_database() {
 
@@ -75,15 +83,17 @@ function display_feeds($db) {
 
 function display_form() {
 session_start();
+//include($_SERVER["DOCUMENT_ROOT"] . "/PFBC/Form.php");
 include("../PFBC/Form.php");
-$form = new PFBC\Form("Feeds");
-$form->addElement(new PFBC\Element\Select("Select a Feed:", "FeedSelect", array(
-   "Feed 1",
-   "Feed 2",
-   "Feed 3"
-)));
-$form->addElement(new PFBC\Element\Button);
-$form->render();
+//$form = new PFBC\Form("GettingStarted");
+//$form->addElement(new PFBC\Element\Textbox("My Textbox:", "MyTextbox"));
+//$form->addElement(new PFBC\Element\Select("My Select:", "MySelect", array(
+//   "Option #1",
+//   "Option #2",
+//   "Option #3"
+//)));
+//$form->addElement(new PFBC\Element\Button);
+//$form->render();
 }
 
 
